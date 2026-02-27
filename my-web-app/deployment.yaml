@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-web-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-argo
+  template:
+    metadata:
+      labels:
+        app: hello-argo
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-web-service
+spec:
+  selector:
+    app: hello-argo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
